@@ -17,7 +17,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Bot conectado correctamente.\n\n"
         "📊 /senal - Solicitar una senal\n"
         "📝 /resultado - Registrar resultado\n"
-        "📈 /estadisticas - Ver estadísticas\n\n"
+        "📈 /estadisticas - Ver estadisticas\n\n"
         "⚠️ Las senales se probarán primero en DEMO."
     )
     await update.message.reply_text(mensaje)
@@ -26,22 +26,22 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def senal(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "🔎 ANALIZANDO EL MERCADO...\n\n"
-        "⏳ El módulo de análisis M1 todavía está en configuración.\n"
-        "No se enviará ninguna operación hasta tener una senal válida."
+        "⏳ El modulo de analisis M1 todavia esta en configuracion.\n"
+        "No se enviara ninguna operacion hasta tener una senal valida."
     )
 
 
 async def resultado(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "📝 REGISTRO DE RESULTADO\n\n"
-        "Esta función quedará conectada al sistema de estadísticas."
+        "Esta funcion quedara conectada al sistema de estadísticas."
     )
 
 
 async def estadisticas(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "📊 ESTADISTICAS\n\n"
-        "Todavía no hay operaciones registradas."
+        "Todavia no hay operaciones registradas."
     )
 
 
@@ -54,7 +54,7 @@ def main():
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("senal", senal))
     app.add_handler(CommandHandler("resultado", resultado))
-    app.add_handler(CommandHandler("estadísticas", estadisticas))
+    app.add_handler(CommandHandler("estadisticas", estadisticas))
 
     print("🚀 Senales Pro M1 iniciado...")
     app.run_polling()
