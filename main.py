@@ -81,7 +81,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # COMANDO /señal
 # ============================================================
 
-async def señal(update: Update, context: ContextTypes.DEFAULT_TYPE):
+):async def senal(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "📊 Analizando el mercado...\n\n"
         "El módulo de análisis M1 continúa en configuración.\n"
@@ -157,12 +157,12 @@ def main():
 
     telegram_app.add_handler(
         CommandHandler("start", start)
+    )telegram_app.add_handler(
+        CommandHandler("señal", señal
     )
 
-    telegram_app.add_handler(
-        CommandHandler("señal", señal)
-    )
 
+    )
     telegram_app.add_handler(
         CommandHandler("resultado", resultado)
     )
