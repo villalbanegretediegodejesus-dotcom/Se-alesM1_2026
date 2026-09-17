@@ -6,6 +6,7 @@ from flask import Flask
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 
+
 # ============================================================
 # CONFIGURACIÓN
 # ============================================================
@@ -13,12 +14,13 @@ from telegram.ext import Application, CommandHandler, ContextTypes
 TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 
 # Credenciales para IQ Option.
-# NO escribirlas directamente en este archivo.
+# Se usarán más adelante mediante variables de entorno.
 IQ_USERNAME = os.environ.get("IQ_USERNAME")
 IQ_PASSWORD = os.environ.get("IQ_PASSWORD")
 
 # Render proporciona PORT automáticamente.
 PORT = int(os.environ.get("PORT", "8080"))
+
 
 # ============================================================
 # LOGGING
@@ -30,6 +32,7 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
+
 
 # ============================================================
 # SERVIDOR WEB PARA RENDER
@@ -71,6 +74,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Bot conectado correctamente.\n\n"
         "Comandos disponibles:\n"
         "/señal - Solicitar una señal de operación\n"
+        "/senal - Solicitar una señal de operación\n"
         "/resultado - Registrar resultado de la operación\n"
         "/estadisticas - Ver estadísticas de las operaciones\n\n"
         "Las señales se probarán primero en DEMO."
@@ -78,10 +82,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # ============================================================
-# COMANDO /señal
+# COMANDO /senal
 # ============================================================
 
-):async def senal(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def senal(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "📊 Analizando el mercado...\n\n"
         "El módulo de análisis M1 continúa en configuración.\n"
@@ -152,17 +156,21 @@ def main():
     telegram_app = Application.builder().token(TOKEN).build()
 
     # --------------------------------------------------------
-    # Comandos
+    # Comandos de Telegram
     # --------------------------------------------------------
 
     telegram_app.add_handler(
         CommandHandler("start", start)
-    )telegram_app.add_handler(
-        CommandHandler("señal", señal
     )
 
-
+    telegram_app.add_handler(
+        CommandHandler("senal", senal)
     )
+
+    telegram_app.add_handler(
+        CommandHandler("señal", senal)
+    )
+
     telegram_app.add_handler(
         CommandHandler("resultado", resultado)
     )
@@ -177,7 +185,10 @@ def main():
 
     logger.info("🤖 SEÑALES PRO M1 iniciado correctamente.")
     logger.info("Telegram Long Polling iniciado.")
-    logger.info("Servidor HTTP escuchando en puerto %s.", PORT)
+    logger.info(
+        "Servidor HTTP escuchando en puerto %s.",
+        PORT
+    )
 
     # --------------------------------------------------------
     # Telegram Long Polling
