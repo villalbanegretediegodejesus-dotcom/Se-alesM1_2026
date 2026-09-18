@@ -4,7 +4,7 @@ import threading
 
 from flask import Flask
 from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes
+from telegram.ext import Application, CommandHandler, MessageHandler, ContextTypes, filters
 
 
 # ============================================================
@@ -73,7 +73,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "🤖 SENALES PRO M1\n\n"
         "Bot conectado correctamente.\n\n"
         "Comandos disponibles:\n"
-        "/senal - Solicitar una senal de operacion\n"
         "/senal - Solicitar una senal de operacion\n"
         "/resultado - Registrar resultado de la operacion\n"
         "/estadisticas - Ver estadísticas de las operaciones\n\n"
@@ -163,12 +162,14 @@ def main():
         CommandHandler("start", start)
     )
 
+    # Comando válido de Telegram (sin acentos ni caracteres especiales)
     telegram_app.add_handler(
         CommandHandler("senal", senal)
     )
 
+    # Captura variantes como /señal o "señal" enviadas en texto plano
     telegram_app.add_handler(
-        CommandHandler("señal", senal)
+        MessageHandler(filters.Regex(r'(?i)^/?señal$'), senal)
     )
 
     telegram_app.add_handler(
