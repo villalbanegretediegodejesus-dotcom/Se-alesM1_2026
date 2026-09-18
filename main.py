@@ -70,14 +70,14 @@ def iniciar_servidor_web():
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "🤖 SEÑALES PRO M1\n\n"
+        "🤖 SENALES PRO M1\n\n"
         "Bot conectado correctamente.\n\n"
         "Comandos disponibles:\n"
-        "/señal - Solicitar una señal de operación\n"
-        "/senal - Solicitar una señal de operación\n"
-        "/resultado - Registrar resultado de la operación\n"
+        "/senal - Solicitar una senal de operacion\n"
+        "/senal - Solicitar una senal de operacion\n"
+        "/resultado - Registrar resultado de la operacion\n"
         "/estadisticas - Ver estadísticas de las operaciones\n\n"
-        "Las señales se probarán primero en DEMO."
+        "Las senales se probarán primero en DEMO."
     )
 
 
@@ -88,8 +88,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def senal(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "📊 Analizando el mercado...\n\n"
-        "El módulo de análisis M1 continúa en configuración.\n"
-        "Las señales se probarán primero en DEMO."
+        "El modulo de analisis M1 continua en configuracion.\n"
+        "Las senales se probarán primero en DEMO."
     )
 
 
@@ -100,7 +100,7 @@ async def senal(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def resultado(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "📝 REGISTRO DE RESULTADO\n\n"
-        "Esta función quedará conectada al sistema "
+        "Esta funcion quedará conectada al sistema "
         "de estadísticas del bot."
     )
 
@@ -111,8 +111,8 @@ async def resultado(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def estadisticas(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "📈 ESTADÍSTICAS\n\n"
-        "Todavía no hay operaciones registradas."
+        "📈 ESTADISTICAS\n\n"
+        "Todavia no hay operaciones registradas."
     )
 
 
@@ -183,7 +183,7 @@ def main():
     # Información de inicio
     # --------------------------------------------------------
 
-    logger.info("🤖 SEÑALES PRO M1 iniciado correctamente.")
+    logger.info("🤖 SENALES PRO M1 iniciado correctamente.")
     logger.info("Telegram Long Polling iniciado.")
     logger.info(
         "Servidor HTTP escuchando en puerto %s.",
