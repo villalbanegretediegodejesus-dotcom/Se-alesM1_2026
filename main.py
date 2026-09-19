@@ -160,7 +160,10 @@ def ejecutar_telegram():
             telegram_app = crear_bot()
 
             telegram_app.run_polling(
-                drop_pending_updates=False
+    drop_pending_updates=False,
+    stop_signals=None
+            )
+        
             )
 
             logger.warning(
