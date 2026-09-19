@@ -82,11 +82,24 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ============================================================
 
 async def senal(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
     await update.message.reply_text(
-        "📊 Analizando el mercado...\n\n"
-        "El modulo de analisis M1 continua en configuracion.\n"
-        "Las senales se probaran primero en DEMO."
+        "📊 ANALIZANDO MERCADO M1...\n\n"
+        "⏱️ Temporalidad: 1 minuto\n"
+        "🧪 Modo: DEMO\n\n"
+        "🔎 Analizando tendencia...\n"
+        "🔎 Analizando soporte y resistencia...\n"
+        "🔎 Analizando patrón de vela...\n\n"
+        "⚠️ Todavía no se genera una entrada.\n"
+        "El módulo de análisis está siendo preparado."
     )
+    
+        
+        
+
+        
+        
+    
 
 
 # ============================================================
