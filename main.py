@@ -1,6 +1,7 @@
 import os
 import logging
 import threading
+import time
 
 from flask import Flask
 from telegram import Update
@@ -13,12 +14,9 @@ from telegram.ext import Application, CommandHandler, MessageHandler, ContextTyp
 
 TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 
-# Credenciales para IQ Option.
-# Se usarán más adelante mediante variables de entorno.
 IQ_USERNAME = os.environ.get("IQ_USERNAME")
 IQ_PASSWORD = os.environ.get("IQ_PASSWORD")
 
-# Render proporciona PORT automáticamente.
 PORT = int(os.environ.get("PORT", "8080"))
 
 
@@ -43,7 +41,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "Bot activo", 200
+    return "SENALES PRO M1 - Bot activo", 200
 
 
 @app.route("/health")
@@ -52,15 +50,14 @@ def health():
 
 
 def iniciar_servidor_web():
-    """
-    Inicia Flask en un hilo separado para que Render
-    detecte el puerto HTTP mientras Telegram trabaja
-    mediante Long Polling.
-    """
+    logger.info("Iniciando servidor HTTP en 0.0.0.0:%s", PORT)
+
     app.run(
         host="0.0.0.0",
         port=PORT,
-        use_reloader=False
+        debug=False,
+        use_reloader=False,
+        threaded=True
     )
 
 
@@ -75,8 +72,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Comandos disponibles:\n"
         "/senal - Solicitar una senal de operacion\n"
         "/resultado - Registrar resultado de la operacion\n"
-        "/estadisticas - Ver estadísticas de las operaciones\n\n"
-        "Las senales se probarán primero en DEMO."
+        "/estadisticas - Ver estadisticas de las operaciones\n\n"
+        "Las senales se probaran primero en DEMO."
     )
 
 
@@ -88,7 +85,7 @@ async def senal(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "📊 Analizando el mercado...\n\n"
         "El modulo de analisis M1 continua en configuracion.\n"
-        "Las senales se probarán primero en DEMO."
+        "Las senales se probaran primero en DEMO."
     )
 
 
@@ -99,8 +96,8 @@ async def senal(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def resultado(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "📝 REGISTRO DE RESULTADO\n\n"
-        "Esta funcion quedará conectada al sistema "
-        "de estadísticas del bot."
+        "Esta funcion quedara conectada al sistema "
+        "de estadisticas del bot."
     )
 
 
@@ -116,60 +113,26 @@ async def estadisticas(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # ============================================================
-# FUNCIÓN PRINCIPAL
+# CREAR TELEGRAM
 # ============================================================
 
-def main():
-
-    # --------------------------------------------------------
-    # Verificar TOKEN
-    # --------------------------------------------------------
-
-    if not TOKEN:
-        raise RuntimeError(
-            "Falta TELEGRAM_BOT_TOKEN en las variables de entorno."
-        )
-
-    logger.info("Iniciando servidor web para Render...")
-
-    # --------------------------------------------------------
-    # Flask en segundo plano
-    # --------------------------------------------------------
-
-    web_thread = threading.Thread(
-        target=iniciar_servidor_web,
-        daemon=True
-    )
-
-    web_thread.start()
-
-    logger.info(
-        "Servidor web iniciado en el puerto %s",
-        PORT
-    )
-
-    # --------------------------------------------------------
-    # Crear aplicación de Telegram
-    # --------------------------------------------------------
+def crear_bot():
 
     telegram_app = Application.builder().token(TOKEN).build()
-
-    # --------------------------------------------------------
-    # Comandos de Telegram
-    # --------------------------------------------------------
 
     telegram_app.add_handler(
         CommandHandler("start", start)
     )
 
-    # Comando válido de Telegram (sin acentos ni caracteres especiales)
     telegram_app.add_handler(
         CommandHandler("senal", senal)
     )
 
-    # Captura variantes como /señal o "señal" enviadas en texto plano
     telegram_app.add_handler(
-        MessageHandler(filters.Regex(r'(?i)^/?señal$'), senal)
+        MessageHandler(
+            filters.Regex(r"(?i)^/?señal$"),
+            senal
+        )
     )
 
     telegram_app.add_handler(
@@ -180,22 +143,92 @@ def main():
         CommandHandler("estadisticas", estadisticas)
     )
 
+    return telegram_app
+
+
+# ============================================================
+# TELEGRAM
+# ============================================================
+
+def ejecutar_telegram():
+
+    while True:
+
+        try:
+            logger.info("🤖 Iniciando Telegram Long Polling...")
+
+            telegram_app = crear_bot()
+
+            telegram_app.run_polling(
+                drop_pending_updates=False
+            )
+
+            logger.warning(
+                "Telegram Long Polling se detuvo. "
+                "Reintentando en 5 segundos..."
+            )
+
+        except Exception as e:
+
+            logger.exception(
+                "Error en Telegram: %s",
+                e
+            )
+
+        time.sleep(5)
+
+
+# ============================================================
+# FUNCIÓN PRINCIPAL
+# ============================================================
+
+def main():
+
+    if not TOKEN:
+        raise RuntimeError(
+            "Falta TELEGRAM_BOT_TOKEN en las variables de entorno."
+        )
+
+    logger.info("========================================")
+    logger.info("🤖 SENALES PRO M1")
+    logger.info("Iniciando aplicacion...")
+    logger.info("========================================")
+
     # --------------------------------------------------------
-    # Información de inicio
+    # SERVIDOR HTTP PARA RENDER
     # --------------------------------------------------------
 
-    logger.info("🤖 SENALES PRO M1 iniciado correctamente.")
-    logger.info("Telegram Long Polling iniciado.")
+    web_thread = threading.Thread(
+        target=iniciar_servidor_web,
+        daemon=True
+    )
+
+    web_thread.start()
+
     logger.info(
-        "Servidor HTTP escuchando en puerto %s.",
+        "Servidor HTTP iniciado. Puerto: %s",
         PORT
     )
 
     # --------------------------------------------------------
-    # Telegram Long Polling
+    # TELEGRAM
     # --------------------------------------------------------
 
-    telegram_app.run_polling()
+    telegram_thread = threading.Thread(
+        target=ejecutar_telegram,
+        daemon=False
+    )
+
+    telegram_thread.start()
+
+    logger.info("Telegram iniciado correctamente.")
+    logger.info("Bot listo para recibir comandos.")
+
+    # --------------------------------------------------------
+    # MANTENER PROCESO VIVO
+    # --------------------------------------------------------
+
+    telegram_thread.join()
 
 
 # ============================================================
