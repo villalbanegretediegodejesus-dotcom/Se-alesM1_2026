@@ -163,8 +163,11 @@ def ejecutar_telegram():
     drop_pending_updates=False,
     stop_signals=None
             )
+    
+    
+            
         
-            )
+            
 
             logger.warning(
                 "Telegram Long Polling se detuvo. "
