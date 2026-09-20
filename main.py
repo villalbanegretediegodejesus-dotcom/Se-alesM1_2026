@@ -75,7 +75,46 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/estadisticas - Ver estadisticas de las operaciones\n\n"
         "Las senales se probaran primero en DEMO."
     )
+# ============================================================
+# DATOS EUR/USD M1 - TWELVE DATA
+# ============================================================
 
+def obtener_velas_eurusd():
+
+    if not TWELVE_DATA_API_KEY:
+        logger.error("Falta TWELVE_DATA_API_KEY.")
+        return None
+
+    url = "https://api.twelvedata.com/time_series"
+
+    parametros = {
+        "symbol": "EUR/USD",
+        "interval": "1min",
+        "outputsize": 20,
+        "apikey": TWELVE_DATA_API_KEY
+    }
+
+    try:
+        respuesta = requests.get(
+            url,
+            params=parametros,
+            timeout=10
+        )
+
+        datos = respuesta.json()
+
+        if "values" not in datos:
+            logger.error("Error Twelve Data: %s", datos)
+            return None
+
+        return datos["values"]
+
+    except Exception as e:
+        logger.exception(
+            "Error obteniendo EUR/USD M1: %s",
+            e
+        )
+        return None
 
 # ============================================================
 # COMANDO /senal
@@ -83,16 +122,52 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def senal(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
+    velas = obtener_velas_eurusd()
+
+    if not velas:
+        await update.message.reply_text(
+            "⚠️ No se pudieron obtener los datos de EUR/USD M1.\n\n"
+            "Revisa la conexión con Twelve Data."
+        )
+        return
+
+    ultima = velas[0]
+
+    apertura = float(ultima["open"])
+    cierre = float(ultima["close"])
+    maximo = float(ultima["high"])
+    minimo = float(ultima["low"])
+
+    if cierre > apertura:
+        direccion = "CALL 📈"
+    elif cierre < apertura:
+        direccion = "PUT 📉"
+    else:
+        direccion = "ESPERAR ⏸️"
+
     await update.message.reply_text(
-        "📊 ANALIZANDO MERCADO M1...\n\n"
+        "📊 SENALES PRO M1\n\n"
+        "💱 Par: EUR/USD\n"
         "⏱️ Temporalidad: 1 minuto\n"
         "🧪 Modo: DEMO\n\n"
-        "🔎 Analizando tendencia...\n"
-        "🔎 Analizando soporte y resistencia...\n"
-        "🔎 Analizando patrón de vela...\n\n"
-        "⚠️ Todavía no se genera una entrada.\n"
-        "El módulo de análisis está siendo preparado."
+        f"🕯️ Apertura: {apertura}\n"
+        f"🕯️ Cierre: {cierre}\n"
+        f"🔺 Máximo: {maximo}\n"
+        f"🔻 Mínimo: {minimo}\n\n"
+        f"📌 Lectura inicial: {direccion}\n\n"
+        "⚠️ Esta es una lectura inicial de prueba."
     )
+
+    
+    
+        
+
+
+        
+    
+
+        
+    
     
         
         
