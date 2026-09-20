@@ -13,7 +13,7 @@ from telegram.ext import Application, CommandHandler, MessageHandler, ContextTyp
 # ============================================================
 
 TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
-
+TWELVE_DATA_API_KEY = os.environ.get("TWELVE_DATA_API_KEY")
 IQ_USERNAME = os.environ.get("IQ_USERNAME")
 IQ_PASSWORD = os.environ.get("IQ_PASSWORD")
 
