@@ -2,7 +2,7 @@ import os
 import logging
 import threading
 import time
-
+import requests
 from flask import Flask
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, ContextTypes, filters
