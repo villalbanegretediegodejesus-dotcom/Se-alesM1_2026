@@ -102,7 +102,7 @@ def obtener_velas_eurusd():
         )
 
         datos = respuesta.json()
-
+logger.info("RESPUESTA TWELVE DATA: %s", datos)
         if "values" not in datos:
             logger.error("Error Twelve Data: %s", datos)
             return None
