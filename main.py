@@ -101,8 +101,7 @@ def obtener_velas_eurusd():
             timeout=10
         )
 
-        datos = respuesta.json()
-logger.info("RESPUESTA TWELVE DATA: %s", datos)
+        datos = respuesta.json()logger.info("RESPUESTA TWELVE DATA: %s", datos)
         if "values" not in datos:
             logger.error("Error Twelve Data: %s", datos)
             return None
