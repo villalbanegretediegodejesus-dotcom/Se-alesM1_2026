@@ -180,7 +180,13 @@ def obtener_velas_eurusd():
 # ============================================================
 
 async def senal(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
+    if not BOT_ACTIVO:
+        await update.message.reply_text(
+            "🔴 BOT APAGADO\n\n"
+            "El bot no esta generando senales.\n"
+            "Usa /encender cuando quieras comenzar."
+        )
+        return
     velas = obtener_velas_eurusd()
 
     if not velas:
