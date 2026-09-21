@@ -77,6 +77,19 @@ async def encender(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "🟢 BOT ENCENDIDO\n\n"
         "El bot queda activo para analizar el mercado.\n"
         "Modo: DEMO"
+    )# ============================================================
+# COMANDO /apagar
+# ============================================================
+
+async def apagar(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    global BOT_ACTIVO
+
+    BOT_ACTIVO = False
+
+    await update.message.reply_text(
+        "🔴 BOT APAGADO\n\n"
+        "El bot ya no generara senales.\n"
+        "Puedes volver a encenderlo cuando quieras con /encender."
     )
 # ============================================================
 # COMANDO /start
