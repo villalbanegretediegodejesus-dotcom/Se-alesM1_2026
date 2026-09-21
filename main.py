@@ -18,7 +18,11 @@ IQ_USERNAME = os.environ.get("IQ_USERNAME")
 IQ_PASSWORD = os.environ.get("IQ_PASSWORD")
 
 PORT = int(os.environ.get("PORT", "8080"))
+# ============================================================
+# CONTROL DEL BOT
+# ============================================================
 
+BOT_ACTIVO = False
 
 # ============================================================
 # LOGGING
