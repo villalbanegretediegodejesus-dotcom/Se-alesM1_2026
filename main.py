@@ -259,7 +259,8 @@ if OPERACION_ACTIVA:
         # ----------------------------------------------------
         # ENVIAR SENAL AUTOMATICA
         # ----------------------------------------------------
-
+global OPERACION_ACTIVA
+OPERACION_ACTIVA = True
         await context.bot.send_message(
             chat_id=CHAT_ID,
             text=(
