@@ -81,17 +81,19 @@ def iniciar_servidor_web():
 # ============================================================
 # COMANDO /encender
 # ============================================================
-
 async def encender(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global BOT_ACTIVO
+    global CHAT_ID
 
     BOT_ACTIVO = True
+    CHAT_ID = update.effective_chat.id
 
     await update.message.reply_text(
         "🟢 BOT ENCENDIDO\n\n"
         "El bot queda activo para analizar el mercado.\n"
         "Modo: DEMO"
-    )# ============================================================
+    )
+# ============================================================
 # COMANDO /apagar
 # ============================================================
 
