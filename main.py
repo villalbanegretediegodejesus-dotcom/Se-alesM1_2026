@@ -161,7 +161,128 @@ def obtener_velas_eurusd():
         )
         return None
 
-    
+    # ============================================================
+# ANALISIS AUTOMATICO M1
+# ============================================================
+
+async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
+
+    global BOT_ACTIVO
+    global CHAT_ID
+
+    if not BOT_ACTIVO:
+        return
+
+    if "CHAT_ID" not in globals():
+        return
+
+    velas = obtener_velas_eurusd()
+
+    if not velas or len(velas) < 10:
+        logger.warning("No hay suficientes datos para analisis automatico.")
+        return
+
+    try:
+
+        datos = []
+
+        for vela in velas:
+
+            datos.append({
+                "datetime": vela["datetime"],
+                "open": float(vela["open"]),
+                "high": float(vela["high"]),
+                "low": float(vela["low"]),
+                "close": float(vela["close"])
+            })
+
+        ultimas_10 = datos[:10]
+
+        velas_alcistas = 0
+        velas_bajistas = 0
+
+        for vela in ultimas_10:
+
+            if vela["close"] > vela["open"]:
+                velas_alcistas += 1
+
+            elif vela["close"] < vela["open"]:
+                velas_bajistas += 1
+
+        precio_inicial = ultimas_10[-1]["open"]
+        precio_actual = ultimas_10[0]["close"]
+
+        if precio_actual > precio_inicial:
+            tendencia = "ALCISTA 📈"
+
+        elif precio_actual < precio_inicial:
+            tendencia = "BAJISTA 📉"
+
+        else:
+            tendencia = "LATERAL ⏸️"
+
+        soporte = min(
+            vela["low"]
+            for vela in ultimas_10
+        )
+
+        resistencia = max(
+            vela["high"]
+            for vela in ultimas_10
+        )
+
+        # ----------------------------------------------------
+        # SOLO ENVIAR CUANDO EXISTE CONFIRMACION
+        # ----------------------------------------------------
+
+        if velas_alcistas >= 6 and tendencia == "ALCISTA 📈":
+
+            direccion = "CALL 📈"
+            confirmacion = "Tendencia alcista con mayoria de velas positivas."
+
+        elif velas_bajistas >= 6 and tendencia == "BAJISTA 📉":
+
+            direccion = "PUT 📉"
+            confirmacion = "Tendencia bajista con mayoria de velas negativas."
+
+        else:
+
+            logger.info("Analisis automatico: ESPERAR. No hay confirmacion.")
+            return
+
+        # ----------------------------------------------------
+        # ENVIAR SENAL AUTOMATICA
+        # ----------------------------------------------------
+
+        await context.bot.send_message(
+            chat_id=CHAT_ID,
+            text=(
+                "🤖 SENALES PRO M1 - AUTOMATICA\n\n"
+                "💱 Par: EUR/USD\n"
+                "⏱️ Temporalidad: 1 minuto\n"
+                "🧪 Modo: DEMO\n\n"
+                f"📈 Velas alcistas: {velas_alcistas}\n"
+                f"📉 Velas bajistas: {velas_bajistas}\n"
+                f"📊 Tendencia: {tendencia}\n\n"
+                f"🧱 Soporte: {soporte}\n"
+                f"🧱 Resistencia: {resistencia}\n\n"
+                f"📌 SENAL: {direccion}\n"
+                f"🔎 Confirmacion: {confirmacion}\n\n"
+                "⚠️ Analisis M1 en fase DEMO."
+            )
+        )
+
+        logger.info(
+            "SENAL AUTOMATICA ENVIADA: %s",
+            direccion
+        )
+
+    except Exception as e:
+
+        logger.exception(
+            "Error en analisis automatico M1: %s",
+            e
+        )
         
         
 
