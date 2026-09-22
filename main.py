@@ -180,6 +180,7 @@ def obtener_velas_eurusd():
 # ============================================================
 
 async def senal(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
     if not BOT_ACTIVO:
         await update.message.reply_text(
             "🔴 BOT APAGADO\n\n"
@@ -187,43 +188,148 @@ async def senal(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "Usa /encender cuando quieras comenzar."
         )
         return
+
     velas = obtener_velas_eurusd()
 
-    if not velas:
+    if not velas or len(velas) < 10:
         await update.message.reply_text(
-            "⚠️ No se pudieron obtener los datos de EUR/USD M1.\n\n"
-            "Revisa la conexión con Twelve Data."
+            "⚠️ No hay suficientes datos para analizar EUR/USD M1."
         )
         return
 
-    ultima = velas[0]
+    try:
 
-    apertura = float(ultima["open"])
-    cierre = float(ultima["close"])
-    maximo = float(ultima["high"])
-    minimo = float(ultima["low"])
+        # ----------------------------------------------------
+        # CONVERTIR DATOS
+        # ----------------------------------------------------
 
-    if cierre > apertura:
-        direccion = "CALL 📈"
-    elif cierre < apertura:
-        direccion = "PUT 📉"
-    else:
-        direccion = "ESPERAR ⏸️"
+        datos = []
 
-    await update.message.reply_text(
-        "📊 SENALES PRO M1\n\n"
-        "💱 Par: EUR/USD\n"
-        "⏱️ Temporalidad: 1 minuto\n"
-        "🧪 Modo: DEMO\n\n"
-        f"🕯️ Apertura: {apertura}\n"
-        f"🕯️ Cierre: {cierre}\n"
-        f"🔺 Máximo: {maximo}\n"
-        f"🔻 Mínimo: {minimo}\n\n"
-        f"📌 Lectura inicial: {direccion}\n\n"
-        "⚠️ Esta es una lectura inicial de prueba."
-    )
+        for vela in velas:
 
-    
+            datos.append({
+                "datetime": vela["datetime"],
+                "open": float(vela["open"]),
+                "high": float(vela["high"]),
+                "low": float(vela["low"]),
+                "close": float(vela["close"])
+            })
+
+        # ----------------------------------------------------
+        # ULTIMA VELA
+        # ----------------------------------------------------
+
+        ultima = datos[0]
+
+        apertura = ultima["open"]
+        cierre = ultima["close"]
+        maximo = ultima["high"]
+        minimo = ultima["low"]
+
+        # ----------------------------------------------------
+        # ANALISIS DE LAS ULTIMAS 10 VELAS
+        # ----------------------------------------------------
+
+        ultimas_10 = datos[:10]
+
+        velas_alcistas = 0
+        velas_bajistas = 0
+
+        for vela in ultimas_10:
+
+            if vela["close"] > vela["open"]:
+                velas_alcistas += 1
+
+            elif vela["close"] < vela["open"]:
+                velas_bajistas += 1
+
+        # ----------------------------------------------------
+        # MOVIMIENTO GENERAL
+        # ----------------------------------------------------
+
+        precio_inicial = ultimas_10[-1]["open"]
+        precio_actual = ultimas_10[0]["close"]
+
+        if precio_actual > precio_inicial:
+            tendencia = "ALCISTA 📈"
+
+        elif precio_actual < precio_inicial:
+            tendencia = "BAJISTA 📉"
+
+        else:
+            tendencia = "LATERAL ⏸️"
+
+        # ----------------------------------------------------
+        # SOPORTE Y RESISTENCIA RECIENTES
+        # ----------------------------------------------------
+
+        soporte = min(
+            vela["low"]
+            for vela in ultimas_10
+        )
+
+        resistencia = max(
+            vela["high"]
+            for vela in ultimas_10
+        )
+
+        # ----------------------------------------------------
+        # DECISION INICIAL
+        # ----------------------------------------------------
+
+        if velas_alcistas >= 6 and tendencia == "ALCISTA 📈":
+
+            direccion = "CALL 📈"
+            confirmacion = "Tendencia alcista con mayoria de velas positivas."
+
+        elif velas_bajistas >= 6 and tendencia == "BAJISTA 📉":
+
+            direccion = "PUT 📉"
+            confirmacion = "Tendencia bajista con mayoria de velas negativas."
+
+        else:
+
+            direccion = "ESPERAR ⏸️"
+            confirmacion = "No existe suficiente confirmacion."
+
+        # ----------------------------------------------------
+        # RESPUESTA
+        # ----------------------------------------------------
+
+        await update.message.reply_text(
+            "📊 SENALES PRO M1\n\n"
+            "💱 Par: EUR/USD\n"
+            "⏱️ Temporalidad: 1 minuto\n"
+            "🧪 Modo: DEMO\n\n"
+
+            f"🕯️ Apertura: {apertura}\n"
+            f"🕯️ Cierre: {cierre}\n"
+            f"🔺 Maximo: {maximo}\n"
+            f"🔻 Minimo: {minimo}\n\n"
+
+            f"📈 Velas alcistas: {velas_alcistas}\n"
+            f"📉 Velas bajistas: {velas_bajistas}\n"
+            f"📊 Tendencia: {tendencia}\n\n"
+
+            f"🧱 Soporte: {soporte}\n"
+            f"🧱 Resistencia: {resistencia}\n\n"
+
+            f"📌 Senal: {direccion}\n"
+            f"🔎 Confirmacion: {confirmacion}\n\n"
+
+            "⚠️ Analisis M1 en fase DEMO."
+        )
+
+    except Exception as e:
+
+        logger.exception(
+            "Error en el analisis M1: %s",
+            e
+        )
+
+        await update.message.reply_text(
+            "⚠️ Ocurrio un error durante el analisis M1."
+        )
     
         
 
