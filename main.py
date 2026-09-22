@@ -276,13 +276,15 @@ def crear_bot():
     telegram_app.add_handler(
         CommandHandler("start", start)
     )
-telegram_app.add_handler(
-    CommandHandler("encender", encender)
-)
 
-telegram_app.add_handler(
-    CommandHandler("apagar", apagar)
-)
+    telegram_app.add_handler(
+        CommandHandler("encender", encender)
+    )
+
+    telegram_app.add_handler(
+        CommandHandler("apagar", apagar)
+    )
+
     telegram_app.add_handler(
         CommandHandler("senal", senal)
     )
@@ -303,7 +305,6 @@ telegram_app.add_handler(
     )
 
     return telegram_app
-
 
 # ============================================================
 # TELEGRAM
