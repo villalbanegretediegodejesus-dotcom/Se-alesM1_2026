@@ -551,9 +551,9 @@ def crear_bot():
     # ========================================================
 
     telegram_app.job_queue.run_repeating(
-        analisis_automatico,
-        interval=60,
-        first=10
+    analisis_automatico,
+    interval=300,
+    first=10
     )
     return telegram_app
 
