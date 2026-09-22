@@ -173,7 +173,7 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
 
     global BOT_ACTIVO
     global CHAT_ID
-
+    global OPERACION_ACTIVA
     if not BOT_ACTIVO:
         return     
     if OPERACION_ACTIVA:
@@ -259,7 +259,7 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
         # ----------------------------------------------------
         # ENVIAR SENAL AUTOMATICA
         # ----------------------------------------------------
-        global OPERACION_ACTIVA
+        
         OPERACION_ACTIVA = True
         await context.bot.send_message(
             chat_id=CHAT_ID,
