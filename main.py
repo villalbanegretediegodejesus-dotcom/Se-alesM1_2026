@@ -177,7 +177,7 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
     global CHAT_ID
 
     if not CHAT_ID:
-    return
+        return
 
     velas = obtener_velas_eurusd()
 
