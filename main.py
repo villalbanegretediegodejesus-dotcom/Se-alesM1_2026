@@ -174,11 +174,8 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
     global BOT_ACTIVO
     global CHAT_ID
 
-    if not BOT_ACTIVO:
-        return     
-    
-    if "CHAT_ID" not in globals():
-         return
+    if not CHAT_ID:
+    return
 
     velas = obtener_velas_eurusd()
 
