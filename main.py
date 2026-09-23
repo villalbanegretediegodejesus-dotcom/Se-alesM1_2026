@@ -250,8 +250,8 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
 
         else:
 
-            logger.info("Analisis automatico: ESPERAR. No hay confirmacion.")
-            return
+            direccion = "ESPERAR ⏸️"
+            confirmacion = "No existe suficiente confirmacion."
 
         # ----------------------------------------------------
         # ENVIAR SENAL AUTOMATICA
