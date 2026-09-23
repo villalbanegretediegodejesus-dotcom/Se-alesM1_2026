@@ -244,21 +244,22 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
         # ----------------------------------------------------
         # SOLO ENVIAR CUANDO EXISTE CONFIRMACION
         # ----------------------------------------------------
+        if velas_alcistas > velas_bajistas:
 
-        if velas_alcistas >= 6 and tendencia == "ALCISTA 📈":
+           direccion = "CALL 📈"
+           confirmacion = "Mayoría de velas alcistas."
 
-            direccion = "CALL 📈"
-            confirmacion = "Tendencia alcista con mayoria de velas positivas."
-
-        elif velas_bajistas >= 6 and tendencia == "BAJISTA 📉":
+        elif velas_bajistas > velas_alcistas:
 
             direccion = "PUT 📉"
-            confirmacion = "Tendencia bajista con mayoria de velas negativas."
+            confirmacion = "Mayoría de velas bajistas."
 
         else:
 
-            direccion = "ESPERAR ⏸️"
-            confirmacion = "No existe suficiente confirmacion."
+            direccion = "CALL 📈" 
+        if tendencia == "ALCISTA 📈"
+        else "PUT 📉"
+            confirmacion = "Velas equilibradas; se utiliza la tendencia general."
 
         # ----------------------------------------------------
         # ENVIAR SENAL AUTOMATICA
