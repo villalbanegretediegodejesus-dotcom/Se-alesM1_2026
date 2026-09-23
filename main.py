@@ -258,7 +258,7 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
         # ENVIAR SENAL AUTOMATICA
         # ----------------------------------------------------
         
-        OPERACION_ACTIVA = True
+        
         await context.bot.send_message(
             chat_id=CHAT_ID,
             text=(
