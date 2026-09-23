@@ -257,7 +257,7 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
         else:
 
             direccion = "CALL 📈" 
-        if tendencia == "ALCISTA 📈"
+        if  tendencia == "ALCISTA 📈"
         else "PUT 📉"
             confirmacion = "Velas equilibradas; se utiliza la tendencia general."
 
