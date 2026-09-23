@@ -274,6 +274,8 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
                 f"🧱 Soporte: {soporte}\n"
                 f"🧱 Resistencia: {resistencia}\n\n"
                 f"📌 SENAL: {direccion}\n"
+                f"🕐 HORA DE ENTRADA: {hora_entrada_texto}\n"
+                f"⏱️ Duracion: 1 minuto\n"
                 f"🔎 Confirmacion: {confirmacion}\n\n"
                 "⚠️ Analisis M1 en fase DEMO."
             )
