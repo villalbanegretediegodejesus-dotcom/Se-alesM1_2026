@@ -176,8 +176,15 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
     global BOT_ACTIVO
     global CHAT_ID
 
-    if not CHAT_ID:
+    if not BOT_ACTIVO:
+        logger.info("ANALISIS AUTOMATICO OMITIDO: BOT_APAGADO")
         return
+
+    if not CHAT_ID:
+        logger.info("ANALISIS AUTOMATICO OMITIDO: CHAT_ID VACIO")
+        return
+
+    logger.info("ANALISIS AUTOMATICO INICIADO: BOT_ACTIVO=%s CHAT_ID=%s", BOT_ACTIVO, CHAT_ID)
 
     velas = obtener_velas_eurusd()
 
