@@ -246,8 +246,8 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
         # ----------------------------------------------------
         if velas_alcistas > velas_bajistas:
 
-           direccion = "CALL 📈"
-           confirmacion = "Mayoría de velas alcistas."
+            direccion = "CALL 📈"
+            confirmacion = "Mayoría de velas alcistas."
 
         elif velas_bajistas > velas_alcistas:
 
@@ -256,10 +256,15 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
 
         else:
 
-            direccion = "CALL 📈" 
-        if  tendencia == "ALCISTA 📈"
-        else "PUT 📉"
-            confirmacion = "Velas equilibradas; se utiliza la tendencia general."
+            if tendencia == "ALCISTA 📈":
+
+                direccion = "CALL 📈"
+                confirmacion = "Velas equilibradas; se utiliza la tendencia general."
+
+            else:
+
+                direccion = "PUT 📉"
+                confirmacion = "Velas equilibradas; se utiliza la tendencia general."
 
         # ----------------------------------------------------
         # ENVIAR SENAL AUTOMATICA
