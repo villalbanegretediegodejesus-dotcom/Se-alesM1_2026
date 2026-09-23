@@ -178,7 +178,7 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
         return     
     if OPERACION_ACTIVA:
         logger.info("Hay una operacion activa. Esperando resultado.")
-    return
+        return
     if "CHAT_ID" not in globals():
          return
 
