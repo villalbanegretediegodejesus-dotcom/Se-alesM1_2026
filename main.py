@@ -256,7 +256,10 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
         # ----------------------------------------------------
         # ENVIAR SENAL AUTOMATICA
         # ----------------------------------------------------
-        
+                # HORA DE ENTRADA EN COLOMBIA
+        ahora_colombia = datetime.now(ZoneInfo("America/Bogota"))
+        hora_entrada = ahora_colombia + timedelta(minutes=1)
+        hora_entrada_texto = hora_entrada.strftime("%H:%M")
         
         await context.bot.send_message(
             chat_id=CHAT_ID,
