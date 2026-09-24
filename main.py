@@ -252,28 +252,127 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
         elif velas_bajistas > velas_alcistas:
 
             direccion = "PUT 📉"
-            confirmacion = "Mayoría de velas bajistas."
+# ============================================================
+# ANALISIS AUTOMATICO M1
+# ============================================================
+
+async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
+
+    global BOT_ACTIVO
+    global CHAT_ID
+
+    if not BOT_ACTIVO:
+        logger.info("ANALISIS AUTOMATICO OMITIDO: BOT_APAGADO")
+        return
+
+    if not CHAT_ID:
+        logger.info("ANALISIS AUTOMATICO OMITIDO: CHAT_ID VACIO")
+        return
+
+    logger.info(
+        "ANALISIS AUTOMATICO INICIADO: BOT_ACTIVO=%s CHAT_ID=%s",
+        BOT_ACTIVO,
+        CHAT_ID
+    )
+
+    velas = obtener_velas_eurusd()
+
+    if not velas or len(velas) < 10:
+        logger.warning(
+            "No hay suficientes datos para analisis automatico."
+        )
+        return
+
+    try:
+
+        datos = []
+
+        for vela in velas:
+
+            datos.append({
+                "datetime": vela["datetime"],
+                "open": float(vela["open"]),
+                "high": float(vela["high"]),
+                "low": float(vela["low"]),
+                "close": float(vela["close"])
+            })
+
+        ultimas_10 = datos[:10]
+
+        velas_alcistas = 0
+        velas_bajistas = 0
+
+        for vela in ultimas_10:
+
+            if vela["close"] > vela["open"]:
+                velas_alcistas += 1
+
+            elif vela["close"] < vela["open"]:
+                velas_bajistas += 1
+
+        precio_inicial = ultimas_10[-1]["open"]
+        precio_actual = ultimas_10[0]["close"]
+
+        if precio_actual > precio_inicial:
+            tendencia = "ALCISTA 📈"
+
+        elif precio_actual < precio_inicial:
+            tendencia = "BAJISTA 📉"
+
+        else:
+            tendencia = "LATERAL ⏸️"
+
+        soporte = min(
+            vela["low"]
+            for vela in ultimas_10
+        )
+
+        resistencia = max(
+            vela["high"]
+            for vela in ultimas_10
+        )
+
+        # ----------------------------------------------------
+        # DECISION DE LA SENAL AUTOMATICA
+        # ----------------------------------------------------
+
+        if velas_alcistas >= 6 and tendencia == "ALCISTA 📈":
+
+            direccion = "CALL 📈"
+            confirmacion = (
+                "Tendencia alcista con mayoria de velas positivas."
+            )
+
+        elif velas_bajistas >= 6 and tendencia == "BAJISTA 📉":
+
+            direccion = "PUT 📉"
+            confirmacion = (
+                "Tendencia bajista con mayoria de velas negativas."
+            )
 
         else:
 
-            if tendencia == "ALCISTA 📈":
+            direccion = "ESPERAR ⏸️"
+            confirmacion = (
+                "No existe suficiente confirmacion."
+            )
 
-                direccion = "CALL 📈"
-                confirmacion = "Velas equilibradas; se utiliza la tendencia general."
+        # ----------------------------------------------------
+        # HORA DE ENTRADA EN COLOMBIA
+        # ----------------------------------------------------
 
-            else:
+        ahora_colombia = datetime.now(
+            ZoneInfo("America/Bogota")
+        )
 
-                direccion = "PUT 📉"
-                confirmacion = "Velas equilibradas; se utiliza la tendencia general."
+        hora_entrada = ahora_colombia + timedelta(minutes=1)
+
+        hora_entrada_texto = hora_entrada.strftime("%H:%M")
 
         # ----------------------------------------------------
         # ENVIAR SENAL AUTOMATICA
         # ----------------------------------------------------
-                # HORA DE ENTRADA EN COLOMBIA
-        ahora_colombia = datetime.now(ZoneInfo("America/Bogota"))
-        hora_entrada = ahora_colombia + timedelta(minutes=1)
-        hora_entrada_texto = hora_entrada.strftime("%H:%M")
-        
+
         await context.bot.send_message(
             chat_id=CHAT_ID,
             text=(
@@ -305,31 +404,6 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
             "Error en analisis automatico M1: %s",
             e
         )
-        
-        
-
-    
-    
-
-    
-    
-        
-        
-            
-        
-
-                
-    
-        
-
-        
-
-    
-
-        
-
-            
-        
 
 
 # ============================================================
