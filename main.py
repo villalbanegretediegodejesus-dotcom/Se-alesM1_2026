@@ -241,17 +241,7 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
             for vela in ultimas_10
         )
 
-        # ----------------------------------------------------
-        # SOLO ENVIAR CUANDO EXISTE CONFIRMACION
-        # ----------------------------------------------------
-        if velas_alcistas > velas_bajistas:
-
-            direccion = "CALL 📈"
-            confirmacion = "Mayoría de velas alcistas."
-
-        elif velas_bajistas > velas_alcistas:
-
-            direccion = "PUT 📉"
+        
 # ============================================================
 # ANALISIS AUTOMATICO M1
 # ============================================================
