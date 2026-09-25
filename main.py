@@ -552,39 +552,17 @@ def crear_bot():
 # ============================================================
 # TELEGRAM
 # ============================================================
-
 def ejecutar_telegram():
 
-    while True:
+    logger.info("🤖 Iniciando Telegram Long Polling...")
 
-        try:
-            logger.info("🤖 Iniciando Telegram Long Polling...")
+    telegram_app = crear_bot()
 
-            telegram_app = crear_bot()
+    telegram_app.run_polling(
+        drop_pending_updates=False,
+        stop_signals=None
+    )
 
-            telegram_app.run_polling(
-    drop_pending_updates=False,
-    stop_signals=None
-            )
-    
-    
-            
-        
-            
-
-            logger.warning(
-                "Telegram Long Polling se detuvo. "
-                "Reintentando en 5 segundos..."
-            )
-
-        except Exception as e:
-
-            logger.exception(
-                "Error en Telegram: %s",
-                e
-            )
-
-        time.sleep(5)
 
 
 # ============================================================
