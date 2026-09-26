@@ -601,15 +601,11 @@ def main():
     # TELEGRAM
     # --------------------------------------------------------
 
-    telegram_thread = threading.Thread(
-        target=ejecutar_telegram,
-        daemon=False
-    )
+     logger.info("Telegram iniciado correctamente.")
+     logger.info("Bot listo para recibir comandos.")
 
-    telegram_thread.start()
-
-    logger.info("Telegram iniciado correctamente.")
-    logger.info("Bot listo para recibir comandos.")
+    
+     ejecutar_telegram()
 
     # --------------------------------------------------------
     # MANTENER PROCESO VIVO
