@@ -605,13 +605,10 @@ def main():
 
      logger.info("Bot listo para recibir comandos.")
 
+
      ejecutar_telegram()
 
-    # --------------------------------------------------------
-    # MANTENER PROCESO VIVO
-    # --------------------------------------------------------
-
-    telegram_thread.join()
+    
 
 
 # ============================================================
