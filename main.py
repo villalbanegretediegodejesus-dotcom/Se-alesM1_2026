@@ -602,9 +602,9 @@ def main():
     # --------------------------------------------------------
 
      logger.info("Telegram iniciado correctamente.")
+
      logger.info("Bot listo para recibir comandos.")
 
-    
      ejecutar_telegram()
 
     # --------------------------------------------------------
