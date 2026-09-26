@@ -1,7 +1,7 @@
 import os
 import logging
 import threading
-import time
+
 import requests
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
