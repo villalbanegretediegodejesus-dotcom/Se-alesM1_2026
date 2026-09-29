@@ -551,15 +551,20 @@ def crear_bot():
     )
     
     #====================================================
-    # ANALISIS AUTOMATICO CADA 5 MINUTOS
+    # ANALISIS AUTOMATICO CADA 5 MINUTOS - HORA COLOMBIA
     #====================================================
-    telegram_app.job_queue.run_repeating(
-           analisis_automatico,
-           interval=300,
-           first=10
-    )
-    return telegram_app
+    from apscheduler.triggers.cron import CronTrigger
 
+    telegram_app.job_queue.scheduler.add_job(
+        analisis_automatico,
+        CronTrigger(
+            minute="*/5",
+            second=0,
+            timezone="America/Bogota"
+        )
+    )
+
+    return telegram_app
 # ============================================================
 # TELEGRAM
 # ============================================================
