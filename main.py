@@ -555,9 +555,9 @@ def crear_bot():
     #====================================================
     from apscheduler.triggers.cron import CronTrigger
 
-    telegram_app.job_queue.scheduler.add_job(
-        analisis_automatico,
-        CronTrigger(
+        telegram_app.job_queue.scheduler.add_job(
+          analisis_automatico,
+          CronTrigger(
             minute="*/5",
             second=0,
             timezone="America/Bogota"
