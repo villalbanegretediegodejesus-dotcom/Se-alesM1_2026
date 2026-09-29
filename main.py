@@ -236,41 +236,40 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
 
         if velas_alcistas > velas_bajistas:
 
-    direccion = "CALL 📈"
-    confirmacion = (
-        "Mayoría de velas alcistas."
-    )
+           direccion = "CALL 📈"
+           confirmacion = (
+          "Mayoría de velas alcistas."
+           )
 
-elif velas_bajistas > velas_alcistas:
+       elif velas_bajistas > velas_alcistas:
 
-    direccion = "PUT 📉"
-    confirmacion = (
-        "Mayoría de velas bajistas."
-    )
+           direccion = "PUT 📉"
+           confirmacion = (
+           "Mayoría de velas bajistas."
+            )
 
-else:
+       else:
 
-    if tendencia == "ALCISTA 📈":
+       if tendencia == "ALCISTA 📈":
 
-        direccion = "CALL 📈"
-        confirmacion = (
+           direccion = "CALL 📈"
+           confirmacion = (
             "Tendencia alcista."
-        )
+          )
 
-    elif tendencia == "BAJISTA 📉":
+       elif tendencia == "BAJISTA 📉":
 
-        direccion = "PUT 📉"
-        confirmacion = (
+           direccion = "PUT 📉"
+           confirmacion = (
             "Tendencia bajista."
-        )
+           )
 
-    else:
+       else:
 
-        direccion = "ESPERAR ⏸️"
-        confirmacion = (
+           direccion = "ESPERAR ⏸️"
+           confirmacion = (
             "Mercado sin dirección clara."
-)
-
+           )
         # ----------------------------------------------------
         # HORA DE ENTRADA EN COLOMBIA
         # ----------------------------------------------------
