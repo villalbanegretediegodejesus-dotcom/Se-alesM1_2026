@@ -234,26 +234,42 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
         # DECISION DE LA SENAL AUTOMATICA
         # ----------------------------------------------------
 
-        if velas_alcistas >= 6 and tendencia == "ALCISTA 📈":
+        if velas_alcistas > velas_bajistas:
 
-            direccion = "CALL 📈"
-            confirmacion = (
-                "Tendencia alcista con mayoria de velas positivas."
-            )
+    direccion = "CALL 📈"
+    confirmacion = (
+        "Mayoría de velas alcistas."
+    )
 
-        elif velas_bajistas >= 6 and tendencia == "BAJISTA 📉":
+elif velas_bajistas > velas_alcistas:
 
-            direccion = "PUT 📉"
-            confirmacion = (
-                "Tendencia bajista con mayoria de velas negativas."
-            )
+    direccion = "PUT 📉"
+    confirmacion = (
+        "Mayoría de velas bajistas."
+    )
 
-        else:
+else:
 
-            direccion = "ESPERAR ⏸️"
-            confirmacion = (
-                "No existe suficiente confirmacion."
-            )
+    if tendencia == "ALCISTA 📈":
+
+        direccion = "CALL 📈"
+        confirmacion = (
+            "Tendencia alcista."
+        )
+
+    elif tendencia == "BAJISTA 📉":
+
+        direccion = "PUT 📉"
+        confirmacion = (
+            "Tendencia bajista."
+        )
+
+    else:
+
+        direccion = "ESPERAR ⏸️"
+        confirmacion = (
+            "Mercado sin dirección clara."
+)
 
         # ----------------------------------------------------
         # HORA DE ENTRADA EN COLOMBIA
