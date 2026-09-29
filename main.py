@@ -234,19 +234,19 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
         # DECISION DE LA SENAL AUTOMATICA
         # ----------------------------------------------------
         
-         if velas_alcistas > velas_bajistas:
+     if velas_alcistas > velas_bajistas:
             direccion = "CALL 📈"
             confirmacion = (
                 "Mayoría de velas alcistas."
             )
 
-          elif velas_bajistas > velas_alcistas:
+      elif velas_bajistas > velas_alcistas:
             direccion = "PUT 📉"
             confirmacion = (
                 "Mayoría de velas bajistas."
             )
 
-          else:
+       else:
               if tendencia == "ALCISTA 📈":
                 direccion = "CALL 📈"
                 confirmacion = (
