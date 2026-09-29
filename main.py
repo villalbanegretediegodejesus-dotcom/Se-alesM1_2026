@@ -233,43 +233,37 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
         # ----------------------------------------------------
         # DECISION DE LA SENAL AUTOMATICA
         # ----------------------------------------------------
-
-        if velas_alcistas > velas_bajistas:
-
-           direccion = "CALL 📈"
-           confirmacion = (
-          "Mayoría de velas alcistas."
-           )
-
-       elif velas_bajistas > velas_alcistas:
-
-           direccion = "PUT 📉"
-           confirmacion = (
-           "Mayoría de velas bajistas."
+         if velas_alcistas > velas_bajistas:
+            direccion = "CALL 📈"
+            confirmacion = (
+                "Mayoría de velas alcistas."
             )
 
-       else:
+          elif velas_bajistas > velas_alcistas:
+            direccion = "PUT 📉"
+            confirmacion = (
+                "Mayoría de velas bajistas."
+            )
 
-       if tendencia == "ALCISTA 📈":
+          else:
+          if tendencia == "ALCISTA 📈":
+                direccion = "CALL 📈"
+                confirmacion = (
+                    "Tendencia alcista."
+                )
 
-           direccion = "CALL 📈"
-           confirmacion = (
-            "Tendencia alcista."
-          )
+           elif tendencia == "BAJISTA 📉":
+                direccion = "PUT 📉"
+                confirmacion = (
+                    "Tendencia bajista."
+                )
 
-       elif tendencia == "BAJISTA 📉":
-
-           direccion = "PUT 📉"
-           confirmacion = (
-            "Tendencia bajista."
-           )
-
-       else:
-
-           direccion = "ESPERAR ⏸️"
-           confirmacion = (
-            "Mercado sin dirección clara."
-           )
+           else:
+                direccion = "ESPERAR ⏸️"
+                confirmacion = (
+                    "Mercado sin dirección clara."
+                )
+        
         # ----------------------------------------------------
         # HORA DE ENTRADA EN COLOMBIA
         # ----------------------------------------------------
