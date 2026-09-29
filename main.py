@@ -247,19 +247,19 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
             )
 
        else:
-              if tendencia == "ALCISTA 📈":
+           if tendencia == "ALCISTA 📈":
                 direccion = "CALL 📈"
                 confirmacion = (
                     "Tendencia alcista."
                 )
 
-              elif tendencia == "BAJISTA 📉":
+            elif tendencia == "BAJISTA 📉":
                 direccion = "PUT 📉"
                 confirmacion = (
                     "Tendencia bajista."
                 )
 
-              else:
+            else:
                 direccion = "ESPERAR ⏸️"
                 confirmacion = (
                     "Mercado sin dirección clara."
