@@ -548,8 +548,8 @@ def crear_bot():
 
     telegram_app.add_handler(
         CommandHandler("estadisticas", estadisticas)
-    )
     
+ return telegram_app
     #====================================================
     # ANALISIS AUTOMATICO CADA 5 MINUTOS
     #====================================================
