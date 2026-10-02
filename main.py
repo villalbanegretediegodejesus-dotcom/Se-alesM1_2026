@@ -24,7 +24,7 @@ PORT = int(os.environ.get("PORT", "8080"))
 # CONTROL DEL BOT
 # ============================================================
 
-BOT_ACTIVO = False
+BOT_ACTIVO = True
 OPERACION_ACTIVA = False
 CHAT_ID = None
 async def encender(update: Update, context: ContextTypes.DEFAULT_TYPE):
