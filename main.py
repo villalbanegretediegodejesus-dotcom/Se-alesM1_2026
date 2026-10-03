@@ -171,7 +171,7 @@ async def analisis_automatico(context: ContextTypes.DEFAULT_TYPE):
         return
 
     logger.info("ANALISIS AUTOMATICO INICIADO: BOT_ACTIVO=%s CHAT_ID=%s", BOT_ACTIVO, CHAT_ID)
-
+    logger.info(">>> APSCHEDULER EJECUTO ANALISIS AUTOMATICO <<<")
     velas = obtener_velas_eurusd()
 
     if not velas or len(velas) < 10:
