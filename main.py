@@ -550,7 +550,7 @@ def crear_bot():
         CommandHandler("estadisticas", estadisticas)
     )
 
-    return telegram_app
+    
     #====================================================
     # ANALISIS AUTOMATICO CADA 5 MINUTOS
     #====================================================
