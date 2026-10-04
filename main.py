@@ -554,7 +554,7 @@ def crear_bot():
     #====================================================
     # ANALISIS AUTOMATICO CADA 5 MINUTOS
     #====================================================
-        telegram_app.job_queue.run_repeating(
+    telegram_app.job_queue.run_repeating(
         analisis_automatico,
         interval=300,
         first=10,
@@ -563,10 +563,9 @@ def crear_bot():
             "max_instances": 1,
             "coalesce": True
         }
-        )
+    )
 
-            return telegram_app
-     
+    return telegram_app
 
 # ============================================================
 # TELEGRAM
