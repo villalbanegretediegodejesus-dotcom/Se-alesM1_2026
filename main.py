@@ -552,11 +552,11 @@ def crear_bot():
 
     
     #====================================================
-    # ANALISIS AUTOMATICO CADA 5 MINUTOS
+    # ANALISIS AUTOMATICO CADA 3 MINUTOS
     #====================================================
     telegram_app.job_queue.run_repeating(
         analisis_automatico,
-        interval=300,
+        interval=180,
         first=10,
         name="analisis_automatico",
         job_kwargs={
